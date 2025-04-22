@@ -30,6 +30,7 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
+      width: 100%;
     }
     
     /* Header */
@@ -52,6 +53,11 @@
     .logo {
       display: flex;
       align-items: center;
+    }
+    
+    .logo img {
+      height: 40px;
+      width: auto;
     }
     
     .logo h1 {
@@ -84,6 +90,9 @@
       display: none;
       font-size: 24px;
       cursor: pointer;
+      background: none;
+      border: none;
+      color: var(--text-dark);
     }
     
     /* Hero Section */
@@ -95,6 +104,7 @@
       color: var(--text-light);
       text-align: center;
       margin-bottom: 60px;
+      padding-top: 60px;
     }
     
     .hero-content {
@@ -353,18 +363,27 @@
       margin-bottom: 20px;
     }
     
+    .footer-logo img {
+      height: 50px;
+      width: auto;
+    }
+    
     .footer-logo h2 {
       color: white;
+      margin-top: 10px;
     }
     
     .footer-links {
       display: flex;
       list-style: none;
       margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     
     .footer-links li {
       margin: 0 15px;
+      margin-bottom: 10px;
     }
     
     .footer-links li a {
@@ -376,6 +395,7 @@
       display: flex;
       list-style: none;
       margin-bottom: 20px;
+      justify-content: center;
     }
     
     .social-links li {
@@ -385,6 +405,7 @@
     .social-icon {
       font-size: 24px;
       color: white;
+      text-decoration: none;
     }
     
     .copyright {
@@ -395,10 +416,26 @@
     @media (max-width: 768px) {
       .header-content {
         flex-direction: column;
+        position: relative;
+      }
+      
+      .mobile-toggle {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 15px;
       }
       
       nav {
-        margin-top: 20px;
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s ease;
+      }
+      
+      nav.active {
+        height: auto;
+        margin-top: 15px;
       }
       
       nav ul {
@@ -414,8 +451,34 @@
         flex-direction: column;
       }
       
+      .hero {
+        height: auto;
+        padding: 100px 0 50px;
+      }
+      
       .hero h2 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+      }
+      
+      .section {
+        padding: 60px 0;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .courses-grid,
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-links li {
+        margin: 5px 10px;
       }
     }
   </style>
@@ -428,8 +491,12 @@
     <div class="container">
       <div class="header-content">
         <div class="logo">
+          <img src="assets/logo-1.png" alt="Deutsch, Digga! Logo">
           <h1>Deutsch, Digga!</h1>
         </div>
+        <button class="mobile-toggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
         <nav>
           <ul>
             <li><a href="#about">О преподавателе</a></li>
@@ -635,6 +702,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
+          <img src="assets/logo-3.png" alt="DD Logo" height="50">
           <h2>Deutsch, Digga!</h2>
         </div>
         <ul class="footer-links">
@@ -645,9 +713,9 @@
           <li><a href="#contact">Контакты</a></li>
         </ul>
         <ul class="social-links">
-          <li><a href="#"><i class="fab fa-telegram"></i></a></li>
-          <li><a href="#"><i class="fab fa-whatsapp"></i></a></li>
-          <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+          <li><a href="#" class="social-icon"><i class="fab fa-telegram"></i></a></li>
+          <li><a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a></li>
+          <li><a href="#" class="social-icon"><i class="fab fa-instagram"></i></a></li>
         </ul>
         <p class="copyright">© 2025 ООО "Дойч, Дигга!". Все права защищены.</p>
       </div>
@@ -655,6 +723,16 @@
   </footer>
 
   <script>
+    // Mobile menu toggle
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const nav = document.querySelector('nav');
+    
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', function() {
+        nav.classList.toggle('active');
+      });
+    }
+    
     // Плавная прокрутка при клике на навигационные ссылки
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
@@ -671,6 +749,11 @@
             top: targetPosition,
             behavior: 'smooth'
           });
+          
+          // Close mobile menu after clicking a link
+          if (window.innerWidth <= 768) {
+            nav.classList.remove('active');
+          }
         }
       });
     });
